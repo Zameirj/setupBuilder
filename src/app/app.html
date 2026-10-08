@@ -1,0 +1,107 @@
+<mat-toolbar class="toolbar">
+  <img src="favicon.ico" alt="" class="logo" />
+  <span class="title">Setup Builder</span>
+
+  <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput placeholder="Filter products" [ngModel]="filter()" (ngModelChange)="filter.set($event)" />
+  </mat-form-field>
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button matTooltip="Refresh products" [disabled]="loading() || building()" (click)="load(); checkForUpdate()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Settings" [disabled]="building()" (click)="editSettings()">
+    <mat-icon>settings</mat-icon>
+  </button>
+</mat-toolbar>
+
+@if (availableUpdate(); as update) {
+  @if (!updateDismissed()) {
+  <section class="update" role="status">
+    <mat-icon>system_update</mat-icon>
+    <span>
+      Setup Builder <strong>{{ update.version }}</strong> is available — you have {{ appVersion() }}.
+      @if (update.notes) {
+        <span class="notes">{{ update.notes }}</span>
+      }
+    </span>
+    <span class="spacer"></span>
+    <button mat-flat-button (click)="downloadUpdate()">
+      <mat-icon>download</mat-icon>
+      Download
+    </button>
+    <button mat-icon-button matTooltip="Dismiss" aria-label="Dismiss update notice" (click)="updateDismissed.set(true)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </section>
+  }
+}
+
+<section class="actions">
+  <div class="output">
+    <button mat-stroked-button [disabled]="building()" (click)="browseOutput()">
+      <mat-icon>drive_folder_upload</mat-icon>
+      Output folder…
+    </button>
+    <span class="path" [class.empty]="!outputDir()" [matTooltip]="outputDir()">
+      {{ outputDir() || 'No output folder selected' }}
+    </span>
+    @if (outputDir()) {
+      <button mat-icon-button matTooltip="Open output folder" (click)="openOutput()">
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+    }
+  </div>
+
+  <span class="spacer"></span>
+
+  <button mat-button [disabled]="building()" (click)="selectAll()">Select all</button>
+  <button mat-button [disabled]="building()" (click)="selectNone()">Select none</button>
+  <button mat-flat-button [disabled]="!canBuild()" (click)="build()">
+    <mat-icon>build</mat-icon>
+    Build selected ({{ selectedCount() }})
+  </button>
+</section>
+
+@if (loading() || building()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<main class="list">
+  @if (loadError(); as err) {
+    <div class="message error">
+      <mat-icon>error</mat-icon>
+      <span>{{ err }}</span>
+      <button mat-stroked-button (click)="load()">Retry</button>
+      <button mat-button (click)="editSettings()">Settings</button>
+    </div>
+  } @else if (!loading() && visibleProducts().length === 0) {
+    <div class="message">No products{{ filter() ? ' match "' + filter() + '"' : '' }}.</div>
+  }
+
+  @for (p of visibleProducts(); track p.productId) {
+    <app-product-row
+      [product]="p"
+      [selected]="selected().has(p.productId)"
+      [sources]="sources()[p.productId] ?? []"
+      [version]="versions()[p.productId] ?? ''"
+      [status]="statuses()[p.productId]?.status ?? 'idle'"
+      [message]="statuses()[p.productId]?.message ?? ''"
+      [disabled]="building()"
+      (selectedChange)="setSelected(p.productId, $event)"
+      (browseFiles)="browseFiles(p)"
+      (browseFolder)="browseFolder(p)"
+      (clearSource)="clearSource(p)"
+      (versionChange)="setVersion(p.productId, $event)"
+      (copyPassword)="copyPassword(p)"
+    />
+  }
+</main>
+
+<footer class="footer">
+  {{ visibleProducts().length }} of {{ products().length }} products · {{ selectedCount() }} selected
+  <span class="spacer"></span>
+  v{{ appVersion() }}
+</footer>

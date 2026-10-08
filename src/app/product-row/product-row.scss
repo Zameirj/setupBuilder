@@ -1,0 +1,109 @@
+:host {
+  display: block;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 120px minmax(240px, 1.2fr) minmax(260px, 1.4fr) 220px 40px;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+
+  &.selected {
+    background: var(--mat-sys-secondary-container);
+  }
+}
+
+.build {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 4px;
+  background: var(--mat-sys-surface);
+  padding-right: 12px;
+}
+
+.info {
+  min-width: 0;
+}
+
+.name {
+  font: var(--mat-sys-title-small);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.child .name::before {
+  content: '↳';
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.id {
+  display: flex;
+  align-items: center;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+  user-select: text;
+}
+
+.source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.path {
+  font: var(--mat-sys-body-small);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  text-align: left;
+
+  &.empty {
+    direction: ltr;
+    color: var(--mat-sys-on-surface-variant);
+    font-style: italic;
+  }
+}
+
+.version {
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 4px;
+  background: var(--mat-sys-surface);
+  font: var(--mat-sys-body-large);
+
+  &:focus {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: -1px;
+  }
+}
+
+.tiny {
+  --mat-icon-button-state-layer-size: 28px;
+  padding: 2px;
+  width: 28px;
+  height: 28px;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+
+  .ok { color: #2e7d32; }
+  .err { color: var(--mat-sys-error); }
+  .queued { color: var(--mat-sys-on-surface-variant); }
+}

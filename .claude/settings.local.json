@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node -v)",
+      "PowerShell(npm -v)",
+      "PowerShell(npm view @angular/core version)",
+      "PowerShell(npm view @angular/material version)",
+      "PowerShell(npm view @tauri-apps/api version)",
+      "PowerShell(npm view @tauri-apps/cli version)",
+      "PowerShell(npm view @tauri-apps/plugin-dialog version)",
+      "PowerShell(npm view @tauri-apps/plugin-opener version)",
+      "PowerShell(npm view @angular/build version)",
+      "PowerShell(cd D:\\\\Tauri_Compile_App; \\(Get-Content src\\\\index.html -Raw\\).Replace\\('<title>SetupBuilder</title>','<title>Setup Builder</title>'\\) | Set-Content -Encoding utf8 src\\\\index.html; npm pkg set scripts.tauri=\"tauri\"; npx ng build 2>&1 | Select-Object -Last 25)",
+      "PowerShell($env:Path = \"$env:USERPROFILE\\\\.cargo\\\\bin;$env:Path\"; rustup default stable 2>&1 | Select-Object -Last 2; cargo --version; cd D:\\\\Tauri_Compile_App\\\\src-tauri; cargo test 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:Path = \"$env:USERPROFILE\\\\.cargo\\\\bin;$env:Path\"; cd D:\\\\Tauri_Compile_App; npx tauri build 2>&1 | Select-String -Pattern \"warning|error|Finished|bundle|\\\\.exe|\\\\.msi\" | Select-Object -Last 25)",
+      "PowerShell(cd D:\\\\Tauri_Compile_App; Add-Content -Encoding utf8 src\\\\styles.scss \"`n.multiline-tooltip .mdc-tooltip__surface {`n  white-space: pre-line;`n  max-width: 600px !important;`n}`n\"; npx ng build 2>&1 | Select-String \"ERROR|error|complete\" ; $env:Path = \"$env:USERPROFILE\\\\.cargo\\\\bin;$env:Path\"; cd src-tauri; cargo test 2>&1 | Select-String \"warning|error|test result\" | Select-Object -First 5)",
+      "PowerShell($s=\"$env:TEMP\\\\claude\\\\D--Tauri-Compile-App\\\\07fa1263-fb90-4a6f-b703-5dbfbdc4114d\\\\scratchpad\"; \"solo\" | Set-Content \"$s\\\\setup file.msi\"; $z=\"D:\\\\Tauri_Compile_App\\\\src-tauri\\\\resources\\\\7zip\"; $pw=\"fed083cb323e7e5005a8a8727dbc55862d94ffb9\"; & \"$z\\\\7z.exe\" a -t7z -mx=9 -mhe=on -y -bso0 -bsp0 \"-sfx$z\\\\7z.sfx\" \"-p$pw\" \"$s\\\\out\\\\files-test.exe\" \"$s\\\\setup file.msi\" \"$s\\\\src\\\\a.txt\"; \"exit=$LASTEXITCODE\"; & \"$z\\\\7z.exe\" l \"-p$pw\" \"$s\\\\out\\\\files-test.exe\" | Select-String \"\\\\.msi|\\\\.txt\"; Get-Process setup-builder -ErrorAction SilentlyContinue | Stop-Process; $env:Path = \"$env:USERPROFILE\\\\.cargo\\\\bin;$env:Path\"; cd D:\\\\Tauri_Compile_App; npx tauri build 2>&1 | Select-String \"Finished|error\" | Select-Object -Last 4; Start-Process D:\\\\Tauri_Compile_App\\\\src-tauri\\\\target\\\\release\\\\setup-builder.exe)"
+    ]
+  }
+}

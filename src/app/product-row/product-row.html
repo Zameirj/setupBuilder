@@ -1,0 +1,75 @@
+<div class="row" [class.selected]="selected()" [class.child]="isChild()">
+  <mat-checkbox
+    class="build"
+    [checked]="selected()"
+    [disabled]="!hasSources() || disabled()"
+    [matTooltip]="hasSources() ? '' : 'Choose files or a folder first'"
+    (change)="selectedChange.emit($event.checked)"
+    >Build</mat-checkbox
+  >
+
+  <div class="info">
+    <div class="name">{{ product().name }}</div>
+    <div class="id">
+      <span>{{ product().productId }}</span>
+      <button
+        mat-icon-button
+        class="tiny"
+        matTooltip="Copy archive password"
+        aria-label="Copy archive password"
+        (click)="copyPassword.emit()"
+      >
+        <mat-icon>key</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="source">
+    <button mat-stroked-button [disabled]="disabled()" [matMenuTriggerFor]="browseMenu">
+      <mat-icon>folder_open</mat-icon>
+      Browse…
+    </button>
+    <mat-menu #browseMenu="matMenu">
+      <button mat-menu-item (click)="browseFiles.emit()">
+        <mat-icon>description</mat-icon>
+        <span>Files…</span>
+      </button>
+      <button mat-menu-item (click)="browseFolder.emit()">
+        <mat-icon>folder</mat-icon>
+        <span>Folder…</span>
+      </button>
+    </mat-menu>
+    @if (hasSources()) {
+      <span class="path" [matTooltip]="sourceTooltip()" matTooltipClass="multiline-tooltip">{{ sourceLabel() }}</span>
+      <button mat-icon-button class="tiny" aria-label="Clear folder" [disabled]="disabled()" (click)="clearSource.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
+    } @else {
+      <span class="path empty">Nothing selected</span>
+    }
+  </div>
+
+  <input
+    class="version"
+    aria-label="Version"
+    [ngModel]="version()"
+    (ngModelChange)="versionChange.emit($event)"
+  />
+
+  <div class="status">
+    @switch (status()) {
+      @case ('queued') {
+        <mat-icon class="queued" matTooltip="Queued">schedule</mat-icon>
+      }
+      @case ('building') {
+        <mat-progress-spinner mode="indeterminate" diameter="22" />
+      }
+      @case ('done') {
+        <mat-icon class="ok" [matTooltip]="message()">check_circle</mat-icon>
+      }
+      @case ('error') {
+        <mat-icon class="err" [matTooltip]="message()">error</mat-icon>
+      }
+    }
+  </div>
+</div>

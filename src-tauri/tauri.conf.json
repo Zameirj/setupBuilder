@@ -1,0 +1,40 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "Setup Builder",
+  "version": "1.0.0",
+  "identifier": "com.casewareafrica.setupbuilder",
+  "build": {
+    "frontendDist": "../dist/setup-builder/browser",
+    "devUrl": "http://localhost:4200",
+    "beforeDevCommand": "npm run start",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Setup Builder",
+        "width": 1300,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 500,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "msi"],
+    "resources": ["resources/7zip/*"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
